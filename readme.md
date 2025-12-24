@@ -1,23 +1,4 @@
-# Linux on the Samsung Galaxy Book2 Pro
-
-I am running Ubunutu 23.04 (previously 22.10) with the Ubuntu-packaged kernel version 6.2.x on my [Samsung Galaxy Book2 Pro (NP950XED-KA2SE)](https://www.samsung.com/se/business/computers/galaxy-book/galaxy-book2-pro-15inch-i7-16gb-512gb-np950xed-ka2se/). This repository contains various notes on different configurations and custom drivers which I am using.
-
-```sh
-$ sudo dmesg
-[    0.000000] microcode: microcode updated early to revision 0x42c, date = 2023-04-18
-[    0.000000] Linux version 6.2.0-34-generic (buildd@lcy02-amd64-025) (x86_64-linux-gnu-gcc-12 (Ubuntu 12.3.0-1ubuntu1~23.04) 12.3.0, GNU ld (GNU Binutils for Ubuntu) 2.40) #34-Ubuntu SMP PREEMPT_DYNAMIC Mon Sep  4 13:06:55 UTC 2023 (Ubuntu 6.2.0-34.34-generic 6.2.16)
-[    0.000000] Command line: BOOT_IMAGE=/boot/vmlinuz-6.2.0-34-generic root=UUID=048b3a23-f56e-4447-8d23-59f889235454 ro quiet splash i915.enable_dpcd_backlight=3 vt.handoff=7
-...
-[    0.000000] DMI: SAMSUNG ELECTRONICS CO., LTD. 950XED/NP950XED-KA2SE, BIOS P11RGF.057.230404.ZQ 04/04/2023
-...
-
-$ lsb_release -a
-No LSB modules are available.
-Distributor ID:	Ubuntu
-Description:	Ubuntu 23.04
-Release:	23.04
-Codename:	lunar
-```
+# Linux on the Samsung Galaxy Book5 Pro
 
 In order to install Linux on the laptop you will need to adjust the BIOS setting for Secure Boot to either
 - With `Secure Boot Control` set to `On`, set `Secure Boot Certificate keyset` to `Secure Boot Supported OS` if you wish to run Linux but only with kernels signed with the certificate to support Secure Boot (including those from Ubuntu's default kernel packages).
@@ -25,9 +6,7 @@ In order to install Linux on the laptop you will need to adjust the BIOS setting
 
 ## Linux Platform Driver
 
-I have created the start of a Linux Kernel platform driver for the device called "Samsung Galaxybook" which you can find here: <https://github.com/joshuagrisham/samsung-galaxybook-extras>
-
-It is likely that this driver can actually support many of the recent Samsung Galaxy Book series notebooks (not just the Galaxy Book2 Pro like I have).
+[joshuagrisham](https://github.com/joshuagrisham) created the start of a Linux Kernel platform driver for the device called "Samsung Galaxybook" which you can find here: <https://github.com/joshuagrisham/samsung-galaxybook-extras>
 
 With this driver, there is expected to be the possibility to control at least the following features:
 
@@ -44,7 +23,7 @@ To add support for controlling the OLED display backlight you can add the follow
 
 For example with Grub you would modify the file `/etc/default/grub` and add it to the `GRUB_CMDLINE_LINUX_DEFAULT` value, run `sudo update-grub`, and then reboot.
 
-I have created an issue to try and drive an upstream fix here: [freedesktop.org: Wrong backlight control type on Samsung Galaxy Book 2 Pro](https://gitlab.freedesktop.org/drm/intel/-/issues/7972).
+[joshuagrisham](https://github.com/joshuagrisham) has created an issue to try and drive an upstream fix here: [freedesktop.org: Wrong backlight control type on Samsung Galaxy Book 2 Pro](https://gitlab.freedesktop.org/drm/intel/-/issues/7972).
 
 ## Fingerprint Reader
 
@@ -71,8 +50,6 @@ There I have even posted a pastebin of my file [necessary-verbs.txt](sound/neces
 If you like, you can run the script [necessary-verbs.sh](sound/necessary-verbs.sh) to "turn on" the speakers but note that you will need to run this periodically and/or create some kind of service that runs it in the background on certain events or a certain schedule (a bit like is shown in the Manjaro thread linked above).
 
 Some of the config files and other logs from my capturing of this list (essentially: running Windows in a QEMU container, mapping the audio devices to the QEMU container, installing the audio drivers within the virtual Windows environment, playing sound from within the QEMU container, and capturing the output into a log file) you can find in the [sound](./sound/) folder of this repository.
-
-TODO how to continue narrowing down the necessary verb list and then package it for an upstream patch?
 
 ## Battery
 
